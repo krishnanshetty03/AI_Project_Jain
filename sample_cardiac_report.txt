@@ -1,0 +1,52 @@
+CARDIOLOGY CONSULTATION REPORT
+
+Patient Information:
+Name: Robert Wilson
+Age: 68
+Gender: Male
+Date of Birth: 08/12/1955
+Medical Record Number: MR345678
+
+Reason for Consultation:
+Chest pain and shortness of breath
+
+History of Present Illness:
+68-year-old male with history of hypertension and diabetes presents with 2-hour onset of severe crushing chest pain radiating to left arm and jaw. Associated with diaphoresis, nausea, and shortness of breath. Pain rates 9/10 and is not relieved by rest.
+
+Past Medical History:
+- Hypertension (20 years)
+- Diabetes mellitus type 2 (15 years)
+- High cholesterol
+- Former smoker (quit 5 years ago, 30 pack-year history)
+
+Physical Examination:
+Vital Signs:
+- Blood Pressure: 160/100 mmHg
+- Heart Rate: 110 bpm
+- Temperature: 98.4°F
+- Respiratory Rate: 24/min
+- Oxygen Saturation: 92% on room air
+
+General: Patient appears anxious and diaphoretic
+Cardiovascular: Tachycardic, S3 gallop present
+Pulmonary: Bilateral rales in lower fields
+
+Diagnostic Tests:
+- ECG: ST-elevation in leads II, III, aVF consistent with inferior STEMI
+- Troponin I: Elevated at 15.2 ng/mL (normal <0.04)
+- Chest X-ray: Mild pulmonary edema
+
+Assessment:
+ST-Elevation Myocardial Infarction (STEMI) - Inferior wall
+
+Plan:
+1. IMMEDIATE cardiac catheterization and PCI
+2. Dual antiplatelet therapy (aspirin + clopidogrel)
+3. Anticoagulation with heparin
+4. Beta-blocker and ACE inhibitor when stable
+5. Statin therapy
+
+Risk Level: CRITICAL - Requires immediate cardiac intervention
+
+Provider: Dr. Lisa Anderson, MD (Interventional Cardiologist)
+Date: October 17, 2025

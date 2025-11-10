@@ -1,0 +1,48 @@
+EMERGENCY DEPARTMENT REPORT
+
+Patient Information:
+Name: Jane Smith
+Age: 32
+Gender: Female
+Date of Birth: 03/22/1991
+Medical Record Number: MR789012
+
+Chief Complaint:
+Severe abdominal pain in right lower quadrant, nausea, and vomiting for 8 hours.
+
+History of Present Illness:
+32-year-old female presents to ED with sudden onset of severe right lower quadrant abdominal pain that began 8 hours ago. Pain is sharp, constant, and worsens with movement. Associated with nausea and vomiting (3 episodes). Patient denies fever initially but reports feeling warm. No recent illness or trauma.
+
+Past Medical History:
+- No significant past medical history
+- No previous surgeries
+- No known allergies
+
+Physical Examination:
+Vital Signs:
+- Temperature: 101.2°F (38.4°C)
+- Blood Pressure: 110/70 mmHg
+- Heart Rate: 88 bpm
+- Respiratory Rate: 18/min
+
+General: Patient appears uncomfortable, lying still to avoid pain
+Abdomen: Tenderness and guarding in right lower quadrant, positive McBurney's point tenderness, positive Rovsing's sign
+Bowel sounds: Diminished
+
+Laboratory Results:
+- White Blood Cell Count: 14,000/μL (elevated with left shift)
+- CT Abdomen/Pelvis: Appendiceal wall thickening and periappendiceal fat stranding consistent with acute appendicitis
+
+Assessment:
+Primary Diagnosis: Acute appendicitis
+
+Plan:
+1. Immediate surgical consultation
+2. NPO (nothing by mouth)
+3. IV fluids and pain management
+4. Prepare for urgent appendectomy
+
+Risk Level: HIGH - Requires immediate surgical intervention
+
+Provider: Dr. Michael Chen, MD
+Date: October 17, 2025

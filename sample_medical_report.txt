@@ -1,0 +1,60 @@
+MEDICAL REPORT
+
+Patient Information:
+Name: John Doe
+Age: 45
+Gender: Male
+Date of Birth: 01/15/1978
+Medical Record Number: MR123456
+
+Chief Complaint:
+Patient presents with fever, persistent cough, and fatigue for the past 5 days.
+
+History of Present Illness:
+45-year-old male with a 5-day history of fever up to 102.5°F, productive cough with yellowish sputum, and significant fatigue. Patient reports difficulty sleeping due to cough. No shortness of breath at rest, but experiences mild dyspnea with exertion.
+
+Past Medical History:
+- Diabetes mellitus type 2 (diagnosed 2015)
+- Hypertension (diagnosed 2018)
+- No known drug allergies
+
+Social History:
+- Non-smoker
+- Occasional alcohol use
+- Works as an office manager
+
+Physical Examination:
+Vital Signs:
+- Temperature: 102.5°F (39.2°C)
+- Blood Pressure: 140/90 mmHg
+- Heart Rate: 95 bpm
+- Respiratory Rate: 22/min
+- Oxygen Saturation: 96% on room air
+
+General: Patient appears mildly ill, alert and oriented
+Head/Neck: No lymphadenopathy
+Cardiovascular: Regular rate and rhythm, no murmurs
+Pulmonary: Bilateral crackles in lower lobes
+Abdomen: Soft, non-tender
+Extremities: No edema
+
+Laboratory Results:
+- White Blood Cell Count: 12,500/μL (elevated)
+- Chest X-ray: Bilateral lower lobe infiltrates consistent with pneumonia
+
+Assessment and Plan:
+Primary Diagnosis: Community-acquired pneumonia
+Secondary Diagnoses: Diabetes mellitus type 2, Hypertension
+
+Treatment Plan:
+1. Antibiotic therapy - Azithromycin 500mg daily x 5 days
+2. Supportive care - rest, fluids, fever management
+3. Follow-up in 3-5 days if symptoms worsen
+4. Return to work when fever-free for 24 hours
+
+Risk Assessment:
+Given patient's diabetes and current pneumonia, this is considered a moderate risk case requiring close monitoring.
+
+Provider: Dr. Sarah Johnson, MD
+Date: October 17, 2025
+Electronic Signature: Dr. Sarah Johnson

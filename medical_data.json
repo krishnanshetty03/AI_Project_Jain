@@ -1,0 +1,152 @@
+[
+  {
+    "symptoms": ["fever", "cough", "fatigue", "body aches", "sore throat"],
+    "medical_history": ["diabetes", "hypertension"],
+    "age": 45,
+    "gender": "male",
+    "vital_signs": {"temperature": 102.5, "blood_pressure": "140/90", "heart_rate": 95},
+    "diagnosis": "influenza",
+    "risk_level": "moderate",
+    "risk_score": 6
+  },
+  {
+    "symptoms": ["chest pain", "shortness of breath", "dizziness", "nausea"],
+    "medical_history": ["heart disease", "high cholesterol"],
+    "age": 65,
+    "gender": "male",
+    "vital_signs": {"temperature": 98.6, "blood_pressure": "160/100", "heart_rate": 110},
+    "diagnosis": "heart attack",
+    "risk_level": "high",
+    "risk_score": 9
+  },
+  {
+    "symptoms": ["headache", "nausea", "vomiting", "sensitivity to light"],
+    "medical_history": ["migraines"],
+    "age": 35,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.2, "blood_pressure": "120/80", "heart_rate": 75},
+    "diagnosis": "migraine",
+    "risk_level": "low",
+    "risk_score": 3
+  },
+  {
+    "symptoms": ["abdominal pain", "nausea", "vomiting", "fever"],
+    "medical_history": [],
+    "age": 28,
+    "gender": "female",
+    "vital_signs": {"temperature": 101.2, "blood_pressure": "110/70", "heart_rate": 88},
+    "diagnosis": "appendicitis",
+    "risk_level": "high",
+    "risk_score": 8
+  },
+  {
+    "symptoms": ["joint pain", "stiffness", "swelling", "fatigue"],
+    "medical_history": ["arthritis"],
+    "age": 58,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.8, "blood_pressure": "130/85", "heart_rate": 72},
+    "diagnosis": "rheumatoid arthritis",
+    "risk_level": "moderate",
+    "risk_score": 5
+  },
+  {
+    "symptoms": ["persistent cough", "weight loss", "night sweats", "fatigue"],
+    "medical_history": ["smoking"],
+    "age": 62,
+    "gender": "male",
+    "vital_signs": {"temperature": 99.5, "blood_pressure": "135/88", "heart_rate": 85},
+    "diagnosis": "lung cancer",
+    "risk_level": "high",
+    "risk_score": 10
+  },
+  {
+    "symptoms": ["frequent urination", "excessive thirst", "blurred vision", "fatigue"],
+    "medical_history": ["obesity"],
+    "age": 52,
+    "gender": "male",
+    "vital_signs": {"temperature": 98.6, "blood_pressure": "145/95", "heart_rate": 80},
+    "diagnosis": "diabetes",
+    "risk_level": "moderate",
+    "risk_score": 6
+  },
+  {
+    "symptoms": ["severe headache", "confusion", "weakness", "speech difficulty"],
+    "medical_history": ["hypertension", "diabetes"],
+    "age": 68,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.4, "blood_pressure": "180/110", "heart_rate": 105},
+    "diagnosis": "stroke",
+    "risk_level": "high",
+    "risk_score": 10
+  },
+  {
+    "symptoms": ["skin rash", "itching", "redness", "swelling"],
+    "medical_history": ["allergies"],
+    "age": 25,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.6, "blood_pressure": "110/70", "heart_rate": 70},
+    "diagnosis": "allergic reaction",
+    "risk_level": "low",
+    "risk_score": 2
+  },
+  {
+    "symptoms": ["bone pain", "fractures", "weakness", "fatigue"],
+    "medical_history": ["osteoporosis"],
+    "age": 72,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.2, "blood_pressure": "125/80", "heart_rate": 68},
+    "diagnosis": "osteoporosis",
+    "risk_level": "moderate",
+    "risk_score": 5
+  },
+  {
+    "symptoms": ["memory loss", "confusion", "difficulty concentrating", "mood changes"],
+    "medical_history": ["family history of dementia"],
+    "age": 75,
+    "gender": "male",
+    "vital_signs": {"temperature": 98.6, "blood_pressure": "130/85", "heart_rate": 75},
+    "diagnosis": "alzheimer's disease",
+    "risk_level": "high",
+    "risk_score": 9
+  },
+  {
+    "symptoms": ["muscle weakness", "tremors", "stiffness", "balance problems"],
+    "medical_history": [],
+    "age": 68,
+    "gender": "male",
+    "vital_signs": {"temperature": 98.4, "blood_pressure": "120/80", "heart_rate": 70},
+    "diagnosis": "parkinson's disease",
+    "risk_level": "high",
+    "risk_score": 8
+  },
+  {
+    "symptoms": ["chronic fatigue", "muscle pain", "sleep problems", "cognitive difficulties"],
+    "medical_history": ["stress", "anxiety"],
+    "age": 42,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.2, "blood_pressure": "115/75", "heart_rate": 68},
+    "diagnosis": "fibromyalgia",
+    "risk_level": "moderate",
+    "risk_score": 4
+  },
+  {
+    "symptoms": ["seizures", "confusion", "memory loss", "headaches"],
+    "medical_history": ["head injury"],
+    "age": 30,
+    "gender": "male",
+    "vital_signs": {"temperature": 98.8, "blood_pressure": "120/80", "heart_rate": 78},
+    "diagnosis": "epilepsy",
+    "risk_level": "moderate",
+    "risk_score": 6
+  },
+  {
+    "symptoms": ["persistent sadness", "loss of interest", "fatigue", "sleep problems"],
+    "medical_history": ["family history of depression"],
+    "age": 38,
+    "gender": "female",
+    "vital_signs": {"temperature": 98.6, "blood_pressure": "118/75", "heart_rate": 72},
+    "diagnosis": "depression",
+    "risk_level": "moderate",
+    "risk_score": 5
+  }
+]
