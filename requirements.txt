@@ -14,3 +14,4 @@ textblob==0.17.1
 plotly==5.15.0
 matplotlib==3.7.2
 seaborn==0.12.2
+gunicorn==21.2.0
