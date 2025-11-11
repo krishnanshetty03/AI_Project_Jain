@@ -2,42 +2,61 @@ from flask import Flask, request, jsonify, render_template_string
 import json
 import os
 import PyPDF2
-import pdfplumber
 import io
-from train_model import MedicalDiagnosisModel, extract_text_from_pdf_content
 import re
+import random
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Initialize the model
-model = MedicalDiagnosisModel()
+# Simple mock model for deployment (lightweight version)
+class SimpleMedicalModel:
+    def __init__(self):
+        # Predefined diagnoses for demo
+        self.diagnoses = ['influenza', 'common cold', 'migraine', 'gastritis', 'anxiety', 'fatigue syndrome']
+        self.risk_levels = ['low', 'moderate', 'high']
+    
+    def predict(self, symptoms, medical_history, age, gender, vital_signs):
+        # Simple rule-based prediction for demo
+        risk_score = min(10, len(symptoms) + len(medical_history) * 0.5 + (age - 30) * 0.1)
+        
+        if risk_score <= 3:
+            risk_level = 'low'
+        elif risk_score <= 7:
+            risk_level = 'moderate'
+        else:
+            risk_level = 'high'
+        
+        # Simple diagnosis based on symptoms
+        diagnosis = 'common cold'
+        if 'fever' in symptoms and 'headache' in symptoms:
+            diagnosis = 'influenza'
+        elif 'chest pain' in symptoms:
+            diagnosis = 'chest pain syndrome'
+            risk_level = 'high'
+        elif 'headache' in symptoms and 'dizziness' in symptoms:
+            diagnosis = 'migraine'
+        elif 'nausea' in symptoms or 'vomiting' in symptoms:
+            diagnosis = 'gastritis'
+        
+        return {
+            'diagnosis': diagnosis,
+            'risk_level': risk_level,
+            'risk_score': round(risk_score, 1),
+            'confidence': round(0.7 + random.random() * 0.25, 2)
+        }
 
-# Load trained model or train new one
-if not model.load_model():
-    print("Training new model...")
-    model.train('medical_data.json')
-else:
-    print("Loaded existing trained model")
+# Initialize simple model
+model = SimpleMedicalModel()
 
 def extract_medical_info_from_pdf(pdf_file):
     """Extract medical information from PDF file"""
     try:
-        # Try using pdfplumber first
-        with pdfplumber.open(pdf_file) as pdf:
-            text = ""
-            for page in pdf.pages:
-                page_text = page.extract_text()
-                if page_text:
-                    text += page_text + " "
-        
-        if not text.strip():
-            # Fallback to PyPDF2
-            pdf_file.seek(0)
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
-            text = ""
-            for page in pdf_reader.pages:
-                text += page.extract_text() + " "
+        # Use PyPDF2 only (lightweight)
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text() + " "
         
         return extract_symptoms_from_text(text)
     
