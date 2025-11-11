@@ -1,12 +1,5 @@
-from flask import Flask, request, jsonify
 import json
-import os
-import PyPDF2
-import io
-import re
 import random
-
-app = Flask(__name__)
 
 # Simple mock model for deployment (lightweight version)
 class SimpleMedicalModel:
@@ -47,64 +40,6 @@ class SimpleMedicalModel:
 
 # Initialize simple model
 model = SimpleMedicalModel()
-
-def handler(request):
-    """Main handler for Vercel"""
-    if request.method == 'GET':
-        return jsonify({'message': 'Medical Diagnosis API', 'status': 'healthy'})
-    
-    elif request.method == 'POST':
-        try:
-            data = request.get_json()
-            
-            if not data:
-                return jsonify({'error': 'No JSON data provided'}), 400
-            
-            # Extract required fields
-            symptoms = data.get('symptoms', [])
-            medical_history = data.get('medical_history', [])
-            age = data.get('age', 40)
-            gender = data.get('gender', 'unknown')
-            vital_signs = data.get('vital_signs', {
-                'temperature': 98.6,
-                'blood_pressure': '120/80',
-                'heart_rate': 70
-            })
-            
-            if not symptoms:
-                return jsonify({'error': 'Symptoms are required'}), 400
-            
-            # Get diagnosis
-            prediction = model.predict(
-                symptoms=symptoms,
-                medical_history=medical_history,
-                age=age,
-                gender=gender,
-                vital_signs=vital_signs
-            )
-            
-            # Get recommendations
-            recommendations = get_recommendations(prediction['diagnosis'], prediction['risk_level'])
-            
-            response = {
-                'input_data': {
-                    'symptoms': symptoms,
-                    'medical_history': medical_history,
-                    'age': age,
-                    'gender': gender,
-                    'vital_signs': vital_signs
-                },
-                'diagnosis': prediction['diagnosis'],
-                'risk_level': prediction['risk_level'],
-                'risk_score': prediction['risk_score'],
-                'confidence': prediction['confidence'],
-                'recommendations': recommendations
-            }
-            
-            return jsonify(response), 200
-        
-        except Exception as e:
-            return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 def get_recommendations(diagnosis, risk_level):
     """Get recommendations based on diagnosis and risk level"""
@@ -155,6 +90,98 @@ def get_recommendations(diagnosis, risk_level):
     
     return recommendations.get(diagnosis.lower(), [])
 
-# Export for Vercel
-def api_handler(request):
-    return handler(request)
+# Vercel serverless function handler
+def handler(request):
+    """Vercel serverless function handler"""
+    
+    # Parse the request
+    if hasattr(request, 'method'):
+        method = request.method
+    else:
+        method = request.get('httpMethod', 'GET')
+    
+    # Handle GET request
+    if method == 'GET':
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({'message': 'Medical Diagnosis API', 'status': 'healthy'})
+        }
+    
+    # Handle POST request
+    elif method == 'POST':
+        try:
+            # Parse request body
+            if hasattr(request, 'get_json'):
+                data = request.get_json()
+            else:
+                body = request.get('body', '{}')
+                if isinstance(body, str):
+                    data = json.loads(body)
+                else:
+                    data = body
+            
+            if not data:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Content-Type': 'application/json'},
+                    'body': json.dumps({'error': 'No JSON data provided'})
+                }
+            
+            # Extract required fields
+            symptoms = data.get('symptoms', [])
+            medical_history = data.get('medical_history', [])
+            age = data.get('age', 40)
+            gender = data.get('gender', 'unknown')
+            vital_signs = data.get('vital_signs', {
+                'temperature': 98.6,
+                'blood_pressure': '120/80',
+                'heart_rate': 70
+            })
+            
+            if not symptoms:
+                return {
+                    'statusCode': 400,
+                    'headers': {'Content-Type': 'application/json'},
+                    'body': json.dumps({'error': 'Symptoms are required'})
+                }
+            
+            # Get diagnosis
+            prediction = model.predict(
+                symptoms=symptoms,
+                medical_history=medical_history,
+                age=age,
+                gender=gender,
+                vital_signs=vital_signs
+            )
+            
+            # Get recommendations
+            recommendations = get_recommendations(prediction['diagnosis'], prediction['risk_level'])
+            
+            response = {
+                'input_data': {
+                    'symptoms': symptoms,
+                    'medical_history': medical_history,
+                    'age': age,
+                    'gender': gender,
+                    'vital_signs': vital_signs
+                },
+                'diagnosis': prediction['diagnosis'],
+                'risk_level': prediction['risk_level'],
+                'risk_score': prediction['risk_score'],
+                'confidence': prediction['confidence'],
+                'recommendations': recommendations
+            }
+            
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps(response)
+            }
+        
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({'error': f'An error occurred: {str(e)}'})
+            }

@@ -1,3 +1,1 @@
-flask==2.2.5
-PyPDF2==3.0.1
-requests==2.28.2
+# No dependencies needed for this serverless function
