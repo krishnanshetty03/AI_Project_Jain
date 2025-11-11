@@ -18,7 +18,7 @@ class SimpleMedicalModel:
     
     def predict(self, symptoms, medical_history, age, gender, vital_signs):
         # Simple rule-based prediction for demo
-        risk_score = min(10, len(symptoms) + len(medical_history) * 0.5 + (age - 30) * 0.1)
+        risk_score = min(10, len(symptoms) + len(medical_history) * 0.5 + max(0, (age - 30)) * 0.1)
         
         if risk_score <= 3:
             risk_level = 'low'
