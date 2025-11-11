@@ -284,12 +284,13 @@
             }
             
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(`${API_URL}/api`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(data),
+                    mode: 'cors'
                 });
                 
                 const result = await response.json();
@@ -301,10 +302,12 @@
                 }
                 
             } catch (error) {
+                console.error('Error:', error);
                 document.getElementById('results').innerHTML = `
                     <div class="diagnosis-card">
                         <h3 style="color: #dc3545;">Error</h3>
                         <p>${error.message}</p>
+                        <p><small>Please ensure you have selected at least one symptom and try again.</small></p>
                     </div>
                 `;
                 document.getElementById('results').style.display = 'block';

@@ -94,9 +94,24 @@ from http.server import BaseHTTPRequestHandler
 import urllib.parse as urlparse
 
 class handler(BaseHTTPRequestHandler):
+    def _set_cors_headers(self):
+        """Set CORS headers to allow cross-origin requests"""
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        self.send_header('Access-Control-Max-Age', '86400')
+    
+    def do_OPTIONS(self):
+        """Handle preflight CORS requests"""
+        self.send_response(200)
+        self._set_cors_headers()
+        self.end_headers()
+        return
+    
     def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
+        self._set_cors_headers()
         self.end_headers()
         response = json.dumps({'message': 'Medical Diagnosis API', 'status': 'healthy'})
         self.wfile.write(response.encode())
@@ -113,6 +128,7 @@ class handler(BaseHTTPRequestHandler):
             except:
                 self.send_response(400)
                 self.send_header('Content-type', 'application/json')
+                self._set_cors_headers()
                 self.end_headers()
                 response = json.dumps({'error': 'Invalid JSON data'})
                 self.wfile.write(response.encode())
@@ -132,6 +148,7 @@ class handler(BaseHTTPRequestHandler):
             if not symptoms:
                 self.send_response(400)
                 self.send_header('Content-type', 'application/json')
+                self._set_cors_headers()
                 self.end_headers()
                 response = json.dumps({'error': 'Symptoms are required'})
                 self.wfile.write(response.encode())
@@ -166,6 +183,7 @@ class handler(BaseHTTPRequestHandler):
             
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
+            self._set_cors_headers()
             self.end_headers()
             response = json.dumps(response_data)
             self.wfile.write(response.encode())
@@ -174,6 +192,7 @@ class handler(BaseHTTPRequestHandler):
         except Exception as e:
             self.send_response(500)
             self.send_header('Content-type', 'application/json')
+            self._set_cors_headers()
             self.end_headers()
             response = json.dumps({'error': f'An error occurred: {str(e)}'})
             self.wfile.write(response.encode())
