@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Diagnosis Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #1f77b4, #17a2b8);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .main-content {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1f77b4;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #1f77b4, #17a2b8);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .diagnosis-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .risk-low { color: #28a745; }
+        .risk-moderate { color: #ffc107; }
+        .risk-high { color: #dc3545; }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1f77b4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Medical Diagnosis Assistant</h1>
+            <p>AI-powered medical diagnosis and risk assessment</p>
+        </div>
+        
+        <div class="main-content">
+            <form id="diagnosisForm">
+                <div class="two-column">
+                    <div>
+                        <div class="form-group">
+                            <label for="age">Age:</label>
+                            <input type="number" id="age" min="1" max="120" value="40" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="temperature">Temperature (°F):</label>
+                            <input type="number" id="temperature" step="0.1" min="95" max="110" value="98.6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="systolic">Systolic Blood Pressure:</label>
+                            <input type="number" id="systolic" min="80" max="200" value="120">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diastolic">Diastolic Blood Pressure:</label>
+                            <input type="number" id="diastolic" min="40" max="120" value="80">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="heartRate">Heart Rate (bpm):</label>
+                            <input type="number" id="heartRate" min="40" max="200" value="70">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label>Symptoms (select all that apply):</label>
+                            <div class="checkbox-group" id="symptoms">
+                                <div class="checkbox-item"><input type="checkbox" value="fever"> Fever</div>
+                                <div class="checkbox-item"><input type="checkbox" value="cough"> Cough</div>
+                                <div class="checkbox-item"><input type="checkbox" value="headache"> Headache</div>
+                                <div class="checkbox-item"><input type="checkbox" value="nausea"> Nausea</div>
+                                <div class="checkbox-item"><input type="checkbox" value="vomiting"> Vomiting</div>
+                                <div class="checkbox-item"><input type="checkbox" value="fatigue"> Fatigue</div>
+                                <div class="checkbox-item"><input type="checkbox" value="weakness"> Weakness</div>
+                                <div class="checkbox-item"><input type="checkbox" value="chest pain"> Chest Pain</div>
+                                <div class="checkbox-item"><input type="checkbox" value="shortness of breath"> Shortness of Breath</div>
+                                <div class="checkbox-item"><input type="checkbox" value="dizziness"> Dizziness</div>
+                                <div class="checkbox-item"><input type="checkbox" value="abdominal pain"> Abdominal Pain</div>
+                                <div class="checkbox-item"><input type="checkbox" value="joint pain"> Joint Pain</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Medical History (select all that apply):</label>
+                            <div class="checkbox-group" id="medicalHistory">
+                                <div class="checkbox-item"><input type="checkbox" value="diabetes"> Diabetes</div>
+                                <div class="checkbox-item"><input type="checkbox" value="hypertension"> Hypertension</div>
+                                <div class="checkbox-item"><input type="checkbox" value="heart disease"> Heart Disease</div>
+                                <div class="checkbox-item"><input type="checkbox" value="asthma"> Asthma</div>
+                                <div class="checkbox-item"><input type="checkbox" value="allergies"> Allergies</div>
+                                <div class="checkbox-item"><input type="checkbox" value="cancer"> Cancer</div>
+                                <div class="checkbox-item"><input type="checkbox" value="stroke"> Stroke</div>
+                                <div class="checkbox-item"><input type="checkbox" value="arthritis"> Arthritis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Get Diagnosis</button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing symptoms...</p>
+            </div>
+            
+            <div class="results" id="results">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://ai-project-jain-gx8t.vercel.app';
+        
+        document.getElementById('diagnosisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            
+            // Collect form data
+            const symptoms = Array.from(document.querySelectorAll('#symptoms input:checked')).map(cb => cb.value);
+            const medicalHistory = Array.from(document.querySelectorAll('#medicalHistory input:checked')).map(cb => cb.value);
+            
+            const data = {
+                symptoms: symptoms,
+                medical_history: medicalHistory,
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                vital_signs: {
+                    temperature: parseFloat(document.getElementById('temperature').value),
+                    blood_pressure: `${document.getElementById('systolic').value}/${document.getElementById('diastolic').value}`,
+                    heart_rate: parseInt(document.getElementById('heartRate').value)
+                }
+            };
+            
+            if (symptoms.length === 0) {
+                alert('Please select at least one symptom.');
+                document.getElementById('loading').style.display = 'none';
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    displayResults(result);
+                } else {
+                    throw new Error(result.error || 'Unknown error occurred');
+                }
+                
+            } catch (error) {
+                document.getElementById('results').innerHTML = `
+                    <div class="diagnosis-card">
+                        <h3 style="color: #dc3545;">Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                document.getElementById('results').style.display = 'block';
+            }
+            
+            document.getElementById('loading').style.display = 'none';
+        });
+        
+        function displayResults(result) {
+            const riskClass = `risk-${result.risk_level}`;
+            
+            const resultsHTML = `
+                <div class="diagnosis-card">
+                    <h3>🔍 Diagnosis Results</h3>
+                    <p><strong>Diagnosis:</strong> ${result.diagnosis.charAt(0).toUpperCase() + result.diagnosis.slice(1)}</p>
+                    <p><strong>Risk Level:</strong> <span class="${riskClass}">${result.risk_level.toUpperCase()}</span></p>
+                    <p><strong>Risk Score:</strong> ${result.risk_score}/10</p>
+                    <p><strong>Confidence:</strong> ${(result.confidence * 100).toFixed(1)}%</p>
+                </div>
+                
+                <div class="diagnosis-card">
+                    <h3>💡 Recommendations</h3>
+                    <ul>
+                        ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="diagnosis-card">
+                    <h3>📋 Input Summary</h3>
+                    <p><strong>Symptoms:</strong> ${result.input_data.symptoms.join(', ')}</p>
+                    <p><strong>Medical History:</strong> ${result.input_data.medical_history.join(', ') || 'None'}</p>
+                    <p><strong>Age:</strong> ${result.input_data.age} | <strong>Gender:</strong> ${result.input_data.gender}</p>
+                </div>
+            `;
+            
+            document.getElementById('results').innerHTML = resultsHTML;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

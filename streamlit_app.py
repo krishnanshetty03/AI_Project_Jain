@@ -54,7 +54,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Flask API base URL
-API_BASE_URL = "http://localhost:6001"
+API_BASE_URL = "https://ai-project-jain-gx8t.vercel.app"
 
 def check_flask_server():
     """Check if Flask server is running"""
