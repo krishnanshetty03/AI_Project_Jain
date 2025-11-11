@@ -90,43 +90,33 @@ def get_recommendations(diagnosis, risk_level):
     
     return recommendations.get(diagnosis.lower(), [])
 
-# Vercel serverless function handler
-def handler(request):
-    """Vercel serverless function handler"""
-    
-    # Parse the request
-    if hasattr(request, 'method'):
-        method = request.method
-    else:
-        method = request.get('httpMethod', 'GET')
-    
-    # Handle GET request
-    if method == 'GET':
-        return {
-            'statusCode': 200,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps({'message': 'Medical Diagnosis API', 'status': 'healthy'})
-        }
-    
-    # Handle POST request
-    elif method == 'POST':
+from http.server import BaseHTTPRequestHandler
+import urllib.parse as urlparse
+
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        response = json.dumps({'message': 'Medical Diagnosis API', 'status': 'healthy'})
+        self.wfile.write(response.encode())
+        return
+
+    def do_POST(self):
         try:
-            # Parse request body
-            if hasattr(request, 'get_json'):
-                data = request.get_json()
-            else:
-                body = request.get('body', '{}')
-                if isinstance(body, str):
-                    data = json.loads(body)
-                else:
-                    data = body
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
             
-            if not data:
-                return {
-                    'statusCode': 400,
-                    'headers': {'Content-Type': 'application/json'},
-                    'body': json.dumps({'error': 'No JSON data provided'})
-                }
+            # Parse JSON data
+            try:
+                data = json.loads(post_data.decode('utf-8'))
+            except:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                response = json.dumps({'error': 'Invalid JSON data'})
+                self.wfile.write(response.encode())
+                return
             
             # Extract required fields
             symptoms = data.get('symptoms', [])
@@ -140,11 +130,12 @@ def handler(request):
             })
             
             if not symptoms:
-                return {
-                    'statusCode': 400,
-                    'headers': {'Content-Type': 'application/json'},
-                    'body': json.dumps({'error': 'Symptoms are required'})
-                }
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                response = json.dumps({'error': 'Symptoms are required'})
+                self.wfile.write(response.encode())
+                return
             
             # Get diagnosis
             prediction = model.predict(
@@ -158,7 +149,7 @@ def handler(request):
             # Get recommendations
             recommendations = get_recommendations(prediction['diagnosis'], prediction['risk_level'])
             
-            response = {
+            response_data = {
                 'input_data': {
                     'symptoms': symptoms,
                     'medical_history': medical_history,
@@ -173,15 +164,17 @@ def handler(request):
                 'recommendations': recommendations
             }
             
-            return {
-                'statusCode': 200,
-                'headers': {'Content-Type': 'application/json'},
-                'body': json.dumps(response)
-            }
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            response = json.dumps(response_data)
+            self.wfile.write(response.encode())
+            return
         
         except Exception as e:
-            return {
-                'statusCode': 500,
-                'headers': {'Content-Type': 'application/json'},
-                'body': json.dumps({'error': f'An error occurred: {str(e)}'})
-            }
+            self.send_response(500)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            response = json.dumps({'error': f'An error occurred: {str(e)}'})
+            self.wfile.write(response.encode())
+            return
