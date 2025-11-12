@@ -71,7 +71,7 @@ def upload_pdf_to_api(pdf_file, age, gender):
         data = {'age': age, 'gender': gender}
         
         response = requests.post(
-            f"{API_BASE_URL}/upload_medical_pdf",
+            f"{API_BASE_URL}/api/",
             files=files,
             data=data,
             timeout=30
@@ -165,7 +165,7 @@ def get_diagnosis_from_api(symptoms, medical_history, age, gender, vital_signs):
         }
         
         response = requests.post(
-            f"{API_BASE_URL}/diagnose",
+            f"{API_BASE_URL}/api/",
             json=data,
             timeout=30
         )
