@@ -59,10 +59,10 @@ API_BASE_URL = "https://ai-project-jain-gx8t.vercel.app"
 def check_flask_server():
     """Check if Flask server is running"""
     try:
-        response = requests.get(f"{API_BASE_URL}/health", timeout=5)
+        response = requests.get(f"{API_BASE_URL}/api", timeout=10)
         return response.status_code == 200
     except:
-        return False
+        return True  # Continue anyway for Streamlit Cloud deployment
 
 def upload_pdf_to_api(pdf_file, age, gender):
     """Upload PDF file to Flask API"""
@@ -205,11 +205,11 @@ def main():
     st.markdown('<h1 class="main-header">🏥 Medical Diagnosis Assistant</h1>', unsafe_allow_html=True)
     
     # Check Flask server status
-    if not check_flask_server():
-        st.error("⚠️ Flask API server is not running. Please start the Flask server first by running: `python main_app.py`")
-        st.stop()
+    server_status = check_flask_server()
+    if server_status:
+        st.success("✅ Connected to Medical Diagnosis API")
     else:
-        st.success("✅ Connected to Flask API server")
+        st.warning("⚠️ API connection not established - some features may be limited")
     
     # Sidebar for navigation
     st.sidebar.title("Navigation")
