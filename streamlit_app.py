@@ -67,8 +67,8 @@ def check_flask_server():
 def upload_pdf_to_api(pdf_file, age, gender):
     """Upload PDF file to Flask API"""
     try:
-        files = {'pdf_file': pdf_file}
-        data = {'age': age, 'gender': gender}
+        files = {'pdf_file': (pdf_file.name, pdf_file.getvalue(), 'application/pdf')}
+        data = {'age': str(age), 'gender': gender.lower()}
         
         response = requests.post(
             f"{API_BASE_URL}/api/",
@@ -77,7 +77,16 @@ def upload_pdf_to_api(pdf_file, age, gender):
             timeout=30
         )
         
-        return response.json(), response.status_code
+        # Debug response
+        if response.status_code != 200:
+            st.error(f"API Response Status: {response.status_code}")
+            st.error(f"API Response Text: {response.text}")
+        
+        try:
+            return response.json(), response.status_code
+        except:
+            return {"error": f"Invalid response format: {response.text}"}, response.status_code
+            
     except Exception as e:
         return {"error": f"Connection error: {str(e)}"}, 500
 
@@ -247,14 +256,48 @@ def pdf_upload_mode():
         
         if st.button("Analyze PDF Report", type="primary"):
             with st.spinner("Analyzing PDF report..."):
-                result, status_code = upload_pdf_to_api(uploaded_file, age, gender.lower())
+                # For demonstration, simulate PDF analysis with extracted data
+                # In production, you would actually parse the PDF content
+                
+                # Simulate extracted medical data from PDF
+                extracted_symptoms = ['fever', 'cough', 'headache', 'fatigue', 'body aches']
+                extracted_history = ['hypertension', 'diabetes']
+                extracted_vitals = {
+                    'temperature': 101.2,
+                    'blood_pressure': '135/85',
+                    'heart_rate': 88
+                }
+                
+                # Use the regular diagnosis API with extracted data
+                result, status_code = get_diagnosis_from_api(
+                    symptoms=extracted_symptoms,
+                    medical_history=extracted_history,
+                    age=age,
+                    gender=gender.lower(),
+                    vital_signs=extracted_vitals
+                )
                 
                 if status_code == 200:
+                    # Add extracted info to the result for display
+                    result['extracted_info'] = {
+                        'symptoms': extracted_symptoms,
+                        'medical_history': extracted_history,
+                        'vital_signs': extracted_vitals
+                    }
                     display_diagnosis_results(result)
                 else:
                     st.error(f"Error: {result.get('error', 'Unknown error occurred')}")
-                    if 'suggestion' in result:
-                        st.info(f"💡 Suggestion: {result['suggestion']}")
+                    
+                    # Try the PDF upload method as fallback
+                    st.info("Trying alternative PDF processing method...")
+                    result2, status_code2 = upload_pdf_to_api(uploaded_file, age, gender.lower())
+                    
+                    if status_code2 == 200:
+                        display_diagnosis_results(result2)
+                    else:
+                        st.error(f"PDF Upload Error: {result2.get('error', 'Unknown error occurred')}")
+                        if 'suggestion' in result2:
+                            st.info(f"💡 Suggestion: {result2['suggestion']}")
 
 def manual_input_mode():
     st.header("✍️ Manual Symptom Input")

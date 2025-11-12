@@ -216,19 +216,56 @@ class handler(BaseHTTPRequestHandler):
     def _handle_pdf_upload(self):
         """Handle PDF upload and analysis"""
         try:
-            # For simplicity, we'll simulate PDF processing
-            # In a real deployment, you'd need proper multipart parsing
+            # Read the multipart form data
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
             
-            # Mock extracted data from PDF
-            symptoms = ['fever', 'cough', 'headache', 'fatigue']
+            # For deployment simplicity, we'll extract basic form data
+            # and simulate PDF processing without complex parsing libraries
+            
+            # Extract age and gender from form data (basic parsing)
+            post_data_str = post_data.decode('utf-8', errors='ignore')
+            
+            # Simple extraction of form fields
+            age = 45  # default
+            gender = 'male'  # default
+            
+            # Try to extract age from form data
+            if 'name="age"' in post_data_str:
+                try:
+                    age_start = post_data_str.find('name="age"')
+                    if age_start != -1:
+                        age_section = post_data_str[age_start:age_start + 100]
+                        import re
+                        age_match = re.search(r'\n\n(\d+)', age_section)
+                        if age_match:
+                            age = int(age_match.group(1))
+                except:
+                    age = 45
+            
+            # Try to extract gender from form data
+            if 'name="gender"' in post_data_str:
+                try:
+                    gender_start = post_data_str.find('name="gender"')
+                    if gender_start != -1:
+                        gender_section = post_data_str[gender_start:gender_start + 100]
+                        if 'female' in gender_section.lower():
+                            gender = 'female'
+                        elif 'other' in gender_section.lower():
+                            gender = 'other'
+                        else:
+                            gender = 'male'
+                except:
+                    gender = 'male'
+            
+            # Mock extracted data from PDF (simulate analysis)
+            symptoms = ['fever', 'cough', 'headache', 'fatigue', 'body aches']
             medical_history = ['hypertension', 'diabetes']
             vital_signs = {
                 'temperature': 101.2,
                 'blood_pressure': '135/85',
                 'heart_rate': 88
             }
-            age = 45
-            gender = 'male'
             
             # Get diagnosis using the mock extracted data
             prediction = model.predict(
